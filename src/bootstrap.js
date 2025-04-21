@@ -1,9 +1,14 @@
-var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+
+function log(msg) {
+    Zotero.debug("Zotero S3 Sync: " + msg);
+}
 
 function install() {
-    log("S3 plugin installed");
+    log("installed");
 }
-function uninstall() {}
+function uninstall() {
+    log("uninstalled");
+}
 function shutdown() {}
 
 async function startup({id, version, rootURI}) {
@@ -15,17 +20,18 @@ async function startup({id, version, rootURI}) {
         });
 
     
-        Services.scriptloader.loadSubScript(rootURI + "s3.js");
+    Services.scriptloader.loadSubScript(rootURI + "s3.js");
 
-        const prefs = Services.prefs.getBranch("extensions.zotero-s3-sync.");
-        let options = {
+    const prefs = Services.prefs.getBranch("extensions.zotero-s3-sync.");
+    let options = {
             bucket: prefs.getCharPref("bucket"),
             region: prefs.getCharPref("region"),
             accessKeyId: prefs.getCharPref("accessKeyId"),
-            secretAccessKey: prefs.getCharPref("secretAccessKey")
-        };
+            secretAccessKey: prefs.getCharPref("secretAccessKey"),
+            endpoint: prefs.getCharPref("endpoint")
+    };
 
-        Zotero.Sync.Storage.MODES.push(new Zotero.Sync.Storage.Mode.S3(options));
-        Zotero.debug("S3 Sync storage mode registered.");
+    //Zotero.Sync.Storage.Mode.push(new Zotero.Sync.Storage.Mode.S3(options));
+    log("S3 Sync storage mode registered.");
     
 }

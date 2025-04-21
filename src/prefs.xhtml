@@ -1,16 +1,21 @@
 <vbox>
   <caption label="Bucket"/>
+  <label value="Bucket identifier:"/>
   <html:input type="text" id="bucket" preference="extensions.zotero-s3-sync.bucket"/>
 
   <caption label="Region"/>
+  <label value="Amazon S3 region (if applicable):"/>
   <html:input type="text" id="region" preference="extensions.zotero-s3-sync.region"/>
 
   <caption label="Access Key ID"/>
+  <label value="Access key ID:"/>
   <html:input type="text"  id="accessKeyId" preference="extensions.zotero-s3-sync.accessKeyId"/>
 
   <caption label="Secret Access Key"/>
-  <html:input type="text" id="secretAccessKey" preference="extensions.zotero-s3-sync.secretAccessKey" type="password"/>
+  <label value="Secret access key:"/>
+  <html:input type="text" id="secretAccessKey" preference="extensions.zotero-s3-sync.secretAccessKey"/>
 
   <caption label="S3 endpoint"/>
-  <html:input type="text" id="endpoint" preference="extensions.zotero-s3-sync.endpoint" type="password"/>
+   <label value="S3 server endpoint:"/>
+  <html:input type="text" id="endpoint" preference="extensions.zotero-s3-sync.endpoint"/>
 </vbox>
