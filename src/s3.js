@@ -40,7 +40,7 @@ ZoteroS3 = {
         menuitem.setAttribute('data-l10n-id', 's3-sync-selected-item');
         doc.getElementById('zotero-itemmenu').appendChild(menuitem);
         menuitem.addEventListener('command', () => {
-            ZoteroOCR.recognize(window);
+            ZoteroS3.sync(window);
         });
         this.storeAddedElement(menuitem);
     },
@@ -76,6 +76,10 @@ ZoteroS3 = {
             this.removeFromWindow(win);
         }
     },
+
+    sync(window) {
+        Zotero.debug("entering sync()");
+    }
 }
 
 if (!Zotero.Sync.Storage.Mode) {
