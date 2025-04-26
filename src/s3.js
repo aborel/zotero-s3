@@ -79,12 +79,24 @@ ZoteroS3 = {
 
     sync(window) {
         Zotero.debug("entering sync()");
+        let options = {
+            bucket: Zotero.Prefs.get("extensions.zotero-s3-sync.bucket"),
+            region: Zotero.Prefs.get("extensions.zotero-s3-sync.region"),
+            accessKeyId: Zotero.Prefs.get("extensions.zotero-s3-sync.accessKeyId"),
+            secretAccessKey: Zotero.Prefs.get("extensions.zotero-s3-sync.secretAccessKey"),
+            endpoint: Zotero.Prefs.get("extensions.zotero-s3-sync.endpoint")
+        }
+        Zotero.Sync.Storage.Mode.S3 = new Zotero.Sync.Storage.Mode.S3(options);
+        Zotero.debug("created Zotero.Sync.Storage.Mode.S3 instance");
+
     }
 }
 
+/*
 if (!Zotero.Sync.Storage.Mode) {
     Zotero.Sync.Storage.Mode = {};
 }
+*/
 
 Zotero.Sync.Storage.Mode.S3 = function (options) {
     this.options = options;
