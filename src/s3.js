@@ -7,6 +7,77 @@
     ***** END LICENSE BLOCK *****
 */
 
+
+ZoteroS3 = {
+    id: null,
+    version: null,
+    rootURI: null,
+    initialized: false,
+    addedElementIDs: [],
+
+    init({ id, version, rootURI }) {
+        if (this.initialized) return;
+        this.id = id;
+        this.version = version;
+        this.rootURI = rootURI;
+        this.initialized = true;
+    },
+
+    log(msg) {
+        Zotero.debug("ZoteroOCR: " + msg);
+    },
+
+    addToWindow(window) {
+        let doc = window.document;
+
+        // Use Fluent for localization
+        window.MozXULElement.insertFTLIfNeeded("zotero-s3.ftl");
+
+        // Add menu option
+        let menuitem = doc.createXULElement('menuitem');
+        menuitem.id = 'zotero-s3-item-menu';
+        menuitem.class = 'menuitem-iconic zotero-menuitem-s3'
+        menuitem.setAttribute('data-l10n-id', 's3-sync-selected-item');
+        doc.getElementById('zotero-itemmenu').appendChild(menuitem);
+        menuitem.addEventListener('command', () => {
+            ZoteroOCR.recognize(window);
+        });
+        this.storeAddedElement(menuitem);
+    },
+
+    addToAllWindows() {
+        var windows = Zotero.getMainWindows();
+        for (let win of windows) {
+            if (!win.ZoteroPane) continue;
+            this.addToWindow(win);
+        }
+    },
+
+    storeAddedElement(elem) {
+        if (!elem.id) {
+            throw new Error("Element must have an id");
+        }
+        this.addedElementIDs.push(elem.id);
+    },
+
+    removeFromWindow(window) {
+        var doc = window.document;
+        // Remove all elements added to DOM
+        for (let id of this.addedElementIDs) {
+            doc.getElementById(id)?.remove();
+        }
+        doc.querySelector('[href="zotero-ocr.ftl"]').remove();
+    },
+
+    removeFromAllWindows() {
+        var windows = Zotero.getMainWindows();
+        for (let win of windows) {
+            if (!win.ZoteroPane) continue;
+            this.removeFromWindow(win);
+        }
+    },
+}
+
 if (!Zotero.Sync.Storage.Mode) {
     Zotero.Sync.Storage.Mode = {};
 }

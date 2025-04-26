@@ -9,7 +9,9 @@ function install() {
 function uninstall() {
     log("uninstalled");
 }
-function shutdown() {}
+function shutdown() {
+    log("shutting down");
+}
 
 async function startup({id, version, rootURI}) {
 
@@ -31,7 +33,9 @@ async function startup({id, version, rootURI}) {
             endpoint: prefs.getCharPref("endpoint")
     };
 
-    //Zotero.Sync.Storage.Mode.push(new Zotero.Sync.Storage.Mode.S3(options));
+    // Zotero.Sync.Storage.Mode.S3 = new Zotero.Sync.Storage.Mode.S3(options);
+    ZoteroS3.init({ id, version, rootURI });
+    ZoteroS3.addToAllWindows();
     log("S3 Sync storage mode registered.");
     
 }
